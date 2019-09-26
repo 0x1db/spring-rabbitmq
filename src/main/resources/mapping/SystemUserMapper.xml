@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wangyu.springrabbitmq.dao.SystemUserMapper">
+  <resultMap id="user_result" type="com.wangyu.springrabbitmq.entity.SystemUser">
+    <id column="id" property="id"/>
+    <result column="nick_name" property="nickName"/>
+    <result column="username" property="username"/>
+    <result column="password" property="password"/>
+    <result column="age" property="age"/>
+    <result column="sex" property="sex"/>
+    <result column="email" property="email"/>
+    <result column="address" property="address"/>
+    <result column="id_card" property="idCard"/>
+    <result column="phone" property="phone"/>
+    <result column="create_date" property="createDate"/>
+    <result column="modify_date" property="modifyDate"/>
+    <result column="del_flag" property="delFlag"/>
+  </resultMap>
+
+  <sql id="user_column">
+    u.id,
+    u.nick_name,
+    u.username,
+    u.password,
+    u.age,
+    u.sex,
+    u.email,
+    u.address,
+    u.id_card,
+    u.phone,
+    u.del_flag,
+    u.create_date,
+    u.modify_date
+  </sql>
+
+  <sql id="user_query_param">
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+      <if test="id!=null">
+        AND u.id = #{id}
+      </if>
+      <if test="ids!=null">
+        AND u.id IN
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+          #{id}
+        </foreach>
+      </if>
+      <if test="address!=null and ''!=address">
+        AND u.address = #{address}
+      </if>
+      <if test="age!=null">
+        AND u.age = #{age}
+      </if>
+      <if test="email!=null and ''!=email">
+        AND u.email = #{email}
+      </if>
+      <if test="username!=null and ''!=username">
+        AND u.username = #{username}
+      </if>
+      <if test="nickName!=null and ''!=nickName">
+        AND u.nick_name = #{nickName}
+      </if>
+      <if test="password!=null and ''!=password">
+        AND u.password = #{password}
+      </if>
+      <if test="phone!=null and ''!=phone">
+        AND u.phone = #{phone}
+      </if>
+      <if test="sex!=null and ''!=sex">
+        AND u.sex = #{sex}
+      </if>
+      <if test="status!=null">
+        AND u.status = #{status}
+      </if>
+      <if test="idCard!=null and ''!=idCard">
+        AND u.id_card = #{idCard}
+      </if>
+    </trim>
+  </sql>
+
+  <!--新增-->
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO sys_user (nick_name, username, password, sex, age, email, address, id_card, phone, create_date, modify_date) VALUES
+    (#{nickName},#{username},#{password},#{sex},#{age},#{email},#{address},#{idCard},#{phone},#{createDate},#{modifyDate})
+  </insert>
+
+  <!--按条件查询单个用户信息-->
+  <select id="findList" resultMap="user_result" parameterType="java.util.HashMap">
+    SELECT
+    <include refid="user_column"/>
+    FROM sys_user u
+    <include refid="user_query_param"></include>
+  </select>
+</mapper>

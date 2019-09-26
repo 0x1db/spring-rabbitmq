@@ -1,0 +1,26 @@
+spring:
+  profiles: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/spring-rabbitmq?characterEncoding=UTF-8&autoReconnect=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+  #rabbitmq配置
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+# mybatis 配置
+mybatis:
+  mapper-locations: classpath:mapping/*.xml
+  type-aliases-package: com.wangyu.springrabbitmq.entity
+
+#LOG
+logging:
+  level:
+    com:
+      wangyu:
+        springrabbitmq:
+          dao: debug
